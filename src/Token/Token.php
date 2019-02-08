@@ -20,7 +20,7 @@ class Token
   public function create($tokenID){
     $issueDate = new DateTime();
     $expiredDate = new DateTime();
-    $tokenDuration = Config::get('kauth.token_exp') ? Config::get('kauth.token_exp') : 'PT50S';
+    $tokenDuration = Config::get('kauth.token_exp') ? Config::get('kauth.token_exp') : 'P32D';
     $jwtIss = Config::get('kauth.payload.iss') ? Config::get('kauth.payload.iss') : 'https://code4mk.org';
     $jwtAud = Config::get('kauth.payload.aud') ? Config::get('kauth.payload.aud') : 'https://code4mk.org';
     $expiredDate->add(new DateInterval($tokenDuration));
