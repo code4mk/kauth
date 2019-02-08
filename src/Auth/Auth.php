@@ -208,8 +208,8 @@ class Auth
 
       KauthModel::where('user_id',$getToken->user_id)
                         -> where(function ($query) use ($getToken){
-                          $query->whereNotIn('id',[$getToken->id]);
-                        })
+                            $query->whereNotIn('id',[$getToken->id]);
+                          })
                         ->delete();
     } catch (\Exception $e) {
       return "jwt-error";
@@ -217,22 +217,23 @@ class Auth
 
   }
 
+  /**
+   *
+   * refresh token
+   *
+   * edit existing token
+   * 
+   */
   public function refreshToken()
   {
     try {
       $token = new Token();
       $getToken = KauthModel::where('tokon',$token->tokon())->first();
-
       $getToken->tokon = $token->create($getToken->id);
-
       $payloader = $token->payloader($token->create($getToken->id));
-
       $getToken->iat = $payloader['iat'];
       $getToken->exp = $payloader['expM'];
-
-
       $getToken->save();
-
       return $getToken->tokon;
     } catch (\Exception $e) {
       return "jwt-error";
