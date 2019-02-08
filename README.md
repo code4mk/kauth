@@ -1,3 +1,5 @@
+![kauth](https://user-images.githubusercontent.com/17185462/52489899-aa8b2500-2bed-11e9-8092-9b44bb827d17.png)
+
 # `kauth`
 kauth is JWT API Authentication ( jwt-auth ) for laravel
 
@@ -46,7 +48,7 @@ Kauth::guard("users")
 ~ `attempt() return a jwt token` which you pass with request header (ex:axios header)
 ## attempt special
 
-* username credential will be optional as  (id,email,username) .  (ex: facebook username)
+* username credential will be optional as  (id|email|username) .  (ex: facebook username)
 * `usernames` describe which columns you want to match for username
 
 ```php
