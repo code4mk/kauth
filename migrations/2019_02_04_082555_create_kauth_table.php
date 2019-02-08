@@ -22,6 +22,8 @@ class CreateKauthTable extends Migration
             $table->string('ip')->nullable();
             $table->string('browser')->nullable();
             $table->string('device')->nullable();
+            $table->string('os')->nullable();
+            $table->string('login')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });
