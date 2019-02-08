@@ -2,10 +2,6 @@
 
 namespace Kauth\Auth;
 
-use Illuminate\Routing\Controller as BaseController;
-use Sinergi\BrowserDetector\Browser;
-use Sinergi\BrowserDetector\Device;
-use Sinergi\BrowserDetector\Os;
 use Illuminate\Http\Request;
 use Kauth\Model\KauthModel;
 use Kauth\Token\Token;
@@ -68,9 +64,6 @@ class Auth
    */
   public function attempt($credentials)
   {
-    $browser = new Browser;
-    $os = new Os();
-    $device = new Device();
     $credential = [];
     $usernames = $credentials['usernames'];
     $username = $credentials['username'];
@@ -118,7 +111,7 @@ class Auth
       $jwt = new KauthModel;
       $jwt->user_id = $user->id;
       $jwt->browser = \Request::get('browser');
-      //$jwt->os = \Request::get('os');
+      $jwt->os = \Request::get('os');
       $jwt->device = \Request::get('device');
       $jwt->active = true;
       $jwt->save();
@@ -143,13 +136,18 @@ class Auth
    */
   public function check()
   {
-    $token = new Token();
-    $user = KauthModel::where('tokon',$token->tokon())->first();
-    $instanceTime = new DateTime();
-    if(!empty($user) && ($instanceTime->getTimestamp() <= $user->exp)){
-      return true;
+    try {
+      $token = new Token();
+      $user = KauthModel::where('tokon',$token->tokon())->first();
+      $instanceTime = new DateTime();
+      if(!empty($user) && ($instanceTime->getTimestamp() <= $user->exp)){
+        return true;
+      }
+      return false;
+    } catch (\Exception $e) {
+      return "jwt-error";
     }
-    return false;
+
   }
 
   /**
@@ -160,13 +158,18 @@ class Auth
    */
   public function id()
   {
-    $token = new Token();
-    $user = KauthModel::where('tokon',$token->tokon())->first();
-    $instanceTime = new DateTime();
-    if(!empty($user) && ($instanceTime->getTimestamp() <= $user->exp)){
-      return $user->user_id;
+    try {
+      $token = new Token();
+      $user = KauthModel::where('tokon',$token->tokon())->first();
+      $instanceTime = new DateTime();
+      if(!empty($user) && ($instanceTime->getTimestamp() <= $user->exp)){
+        return $user->user_id;
+      }
+      return 0;
+    } catch (\Exception $e) {
+      return "jwt-error";
     }
-    return 0;
+
   }
 
   /**
@@ -177,10 +180,15 @@ class Auth
    */
   public function logout()
   {
-    $token = new Token();
-    $user = KauthModel::where('tokon',$token->tokon())->first();
-    $user->delete();
-    return "done";
+    try {
+      $token = new Token();
+      $user = KauthModel::where('tokon',$token->tokon())->first();
+      $user->delete();
+    } catch (\Exception $e) {
+      return "jwt-error";
+    }
+
+
   }
 
   /**
@@ -192,15 +200,42 @@ class Auth
    */
   public function logoutOtherDevices()
   {
-    $token = new Token();
-    $user = KauthModel::where('tokon',$token->tokon())->first();
+    try {
+      $token = new Token();
+      $user = KauthModel::where('tokon',$token->tokon())->first();
 
-    // fetch all token without current token
+      // fetch all token without current token
 
-    KauthModel::where('user_id',$user->user_id)
-                      -> where(function ($query) use ($user){
-                        $query->whereNotIn('id',[$user->id]);
-                      })
-                      ->delete();
+      KauthModel::where('user_id',$user->user_id)
+                        -> where(function ($query) use ($user){
+                          $query->whereNotIn('id',[$user->id]);
+                        })
+                        ->delete();
+    } catch (\Exception $e) {
+      return "jwt-error";
+    }
+
+  }
+
+  public function refreshToken()
+  {
+    try {
+      $token = new Token();
+      $user = KauthModel::where('tokon',$token->tokon())->first();
+
+      $user->tokon = $token->create($user->id);
+
+      $payloader = $token->payloader($token->create($user->id));
+
+      $user->iat = $payloader['iat'];
+      $user->exp = $payloader['expM'];
+
+
+      $user->save();
+
+      return $user->tokon;
+    } catch (\Exception $e) {
+      return "jwt-error";
+    }
   }
 }

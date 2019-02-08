@@ -5,6 +5,7 @@
     "jwt",
     "jwt-auth",
     "laravel",
+    "laravel-jwt",
     "auth",
     "code4mk",
     "0devco",
