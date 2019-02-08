@@ -31,6 +31,7 @@ return [
   |
   | You can set jwt iss and aud
   |
+  | your url host name
   */
   "payload" => [
     "iss" = "",
