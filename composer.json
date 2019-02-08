@@ -1,0 +1,43 @@
+{
+  "name": "code4mk/kauth",
+  "description": "kauth is JWT API Authentication ( jwt-auth ) for laravel",
+  "keywords": [
+    "jwt",
+    "jwt-auth",
+    "laravel",
+    "auth",
+    "code4mk",
+    "0devco",
+    "api",
+  ],
+  "homepage": "https://github.com/code4mk/kauth",
+  "support": {
+    "issues": "https://github.com/code4mk/kauth/issues",
+    "source": "https://github.com/code4mk/kauth"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "code4mk",
+      "email": "hiremostafa@gmail.com",
+      "website": "https://code4mk.org"
+    }
+  ],
+  "require": {
+    "firebase/php-jwt": "^5.0",
+  },
+  "autoload": {
+    "psr-4": {
+      "Kauth\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+        "providers": [
+            "Kauth\\KauthServiceProvider"
+        ]
+    }
+  },
+  "prefer-stable": true,
+  "minimum-stability": "dev",
+}
