@@ -1,5 +1,5 @@
-# kauth
-kauth is laravel jwt auth system
+# `kauth`
+kauth is JWT API Authentication ( jwt-auth ) for laravel
 
 
 # Installation
@@ -44,3 +44,41 @@ Kauth::guard("users")
 ```
 
 ~ `attempt() return a jwt token` which you pass with request header (ex:axios header)
+## attempt special
+
+* username credential will be optional as  (id,email,username) .  (ex: facebook username)
+* `usernames` describe which columns you want to match for username
+
+```php
+attempt(["usernames"=>["id","email","name"],"username"=>"request query for username","password=>123456"]);
+```
+## Kauth::check()
+
+```php
+Kauth::check();
+```
+## Kauth::id()
+
+```php
+Kauth::id();
+```
+
+## Kauth::refreshToken()
+
+```php
+Kauth::refreshToken()
+```
+
+## Kauth::logout()
+
+```php
+Kauth::logout();
+```
+
+## Kauth::logoutOtherDevices()
+
+```php
+Kauth::logoutOtherDevices();
+```
+
+<a href="https://twitter.com/0devco" target="_blank" ><p align="center" ><img src="https://raw.githubusercontent.com/0devco/docs/master/.devco-images/logo-transparent.png"></p></a>
