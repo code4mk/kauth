@@ -24,6 +24,11 @@ return [
 
   "token_exp" => "",
 
+  "payload" => [
+    "iss" = "",
+    "aud" = ""
+  ]
+
   "guard" => [
     "users" => [
       "table" => "users",

@@ -21,11 +21,13 @@ class Token
     $issueDate = new DateTime();
     $expiredDate = new DateTime();
     $tokenDuration = Config::get('kauth.token_exp') ? Config::get('kauth.token_exp') : 'PT50S';
+    $jwtIss = Config::get('kauth.payload.iss') ? Config::get('kauth.payload.iss') : 'https://code4mk.org';
+    $jwtAud = Config::get('kauth.payload.aud') ? Config::get('kauth.payload.aud') : 'https://code4mk.org';
     $expiredDate->add(new DateInterval($tokenDuration));
     $key = "example_key";
     $token = array(
-        "iss" => "http://kamal.org",
-        "aud" => "http://kamal.com",
+        "iss" => $jwtIss,
+        "aud" => $jwtAud,
         "auth" => true,
         "iat" => $issueDate->getTimestamp(),
         "expM" => $expiredDate->getTimestamp(),

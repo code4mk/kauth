@@ -65,8 +65,8 @@ class Auth
   public function attempt($credentials)
   {
     $credential = [];
-    $usernames = $credentials['usernames'];
-    $username = $credentials['username'];
+    $getTokennames = $credentials['usernames'];
+    $getTokenname = $credentials['username'];
 
     // store credentials without password & username
 
@@ -80,12 +80,12 @@ class Auth
 
     // fetch user by credentials
 
-    $user = DB::table(Config::get('kauth.guard.' . $this->guard. '.table'))
+    $getToken = DB::table(Config::get('kauth.guard.' . $this->guard. '.table'))
             // multiple username accept (id||username||email >> etc)
-            ->where(function ($query) use ($usernames,$username){
-              foreach ($usernames as $key => $value) {
-                $query->orWhere($value,$username)
-                      ->orWhere($value,$username);
+            ->where(function ($query) use ($getTokennames,$getTokenname){
+              foreach ($getTokennames as $key => $value) {
+                $query->orWhere($value,$getTokenname)
+                      ->orWhere($value,$getTokenname);
               }
             })
             ->where(function ($query) use ($credential) {
@@ -97,19 +97,19 @@ class Auth
 
     // check has user and socialite
 
-    if(!empty($user) && !($this->socialite)){
-      $userPassword = Hash::check($credentials['password'],$user->password);
-    } elseif (!empty($user) && $this->socialite) {
-      $userPassword = true;
+    if(!empty($getToken) && !($this->socialite)){
+      $getTokenPassword = Hash::check($credentials['password'],$getToken->password);
+    } elseif (!empty($getToken) && $this->socialite) {
+      $getTokenPassword = true;
     } else {
-      $userPassword = false;
+      $getTokenPassword = false;
     }
 
     // check user and password then store jwt token
 
-    if (!empty($user) && $userPassword ) {
+    if (!empty($getToken) && $getTokenPassword ) {
       $jwt = new KauthModel;
-      $jwt->user_id = $user->id;
+      $jwt->user_id = $getToken->id;
       $jwt->browser = \Request::get('browser');
       $jwt->os = \Request::get('os');
       $jwt->device = \Request::get('device');
@@ -138,9 +138,9 @@ class Auth
   {
     try {
       $token = new Token();
-      $user = KauthModel::where('tokon',$token->tokon())->first();
+      $getToken = KauthModel::where('tokon',$token->tokon())->first();
       $instanceTime = new DateTime();
-      if(!empty($user) && ($instanceTime->getTimestamp() <= $user->exp)){
+      if(!empty($getToken) && ($instanceTime->getTimestamp() <= $getToken->exp)){
         return true;
       }
       return false;
@@ -160,10 +160,10 @@ class Auth
   {
     try {
       $token = new Token();
-      $user = KauthModel::where('tokon',$token->tokon())->first();
+      $getToken = KauthModel::where('tokon',$token->tokon())->first();
       $instanceTime = new DateTime();
-      if(!empty($user) && ($instanceTime->getTimestamp() <= $user->exp)){
-        return $user->user_id;
+      if(!empty($getToken) && ($instanceTime->getTimestamp() <= $getToken->exp)){
+        return $getToken->user_id;
       }
       return 0;
     } catch (\Exception $e) {
@@ -182,8 +182,8 @@ class Auth
   {
     try {
       $token = new Token();
-      $user = KauthModel::where('tokon',$token->tokon())->first();
-      $user->delete();
+      $getToken = KauthModel::where('tokon',$token->tokon())->first();
+      $getToken->delete();
     } catch (\Exception $e) {
       return "jwt-error";
     }
@@ -202,13 +202,13 @@ class Auth
   {
     try {
       $token = new Token();
-      $user = KauthModel::where('tokon',$token->tokon())->first();
+      $getToken = KauthModel::where('tokon',$token->tokon())->first();
 
       // fetch all token without current token
 
-      KauthModel::where('user_id',$user->user_id)
-                        -> where(function ($query) use ($user){
-                          $query->whereNotIn('id',[$user->id]);
+      KauthModel::where('user_id',$getToken->user_id)
+                        -> where(function ($query) use ($getToken){
+                          $query->whereNotIn('id',[$getToken->id]);
                         })
                         ->delete();
     } catch (\Exception $e) {
@@ -221,19 +221,19 @@ class Auth
   {
     try {
       $token = new Token();
-      $user = KauthModel::where('tokon',$token->tokon())->first();
+      $getToken = KauthModel::where('tokon',$token->tokon())->first();
 
-      $user->tokon = $token->create($user->id);
+      $getToken->tokon = $token->create($getToken->id);
 
-      $payloader = $token->payloader($token->create($user->id));
+      $payloader = $token->payloader($token->create($getToken->id));
 
-      $user->iat = $payloader['iat'];
-      $user->exp = $payloader['expM'];
+      $getToken->iat = $payloader['iat'];
+      $getToken->exp = $payloader['expM'];
 
 
-      $user->save();
+      $getToken->save();
 
-      return $user->tokon;
+      return $getToken->tokon;
     } catch (\Exception $e) {
       return "jwt-error";
     }
