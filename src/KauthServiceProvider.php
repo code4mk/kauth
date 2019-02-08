@@ -22,14 +22,14 @@ class KauthServiceProvider extends ServiceProvider
    */
    public function boot()
    {
-     // load database
-      $this->loadMigrationsFrom(
-        __DIR__.'/../migrations/'
-      );
-      // load config
-      $this->mergeConfigFrom(
-        __DIR__.'/../config/kauth.php','kauth'
-      );
+     // publish database
+      $this->publishes([
+        __DIR__ . '/../migrations/' => base_path('/database/migrations'),
+       ], 'migrations');
+      // publish config
+      $this->publishes([
+        __DIR__ . '/../config/kauth.php' => config_path('kauth.php'),
+      ], 'config');
       //load alias
       AliasLoader::getInstance()->alias('Kauth', 'Kauth\Facades\Auth');
    }
