@@ -10,7 +10,7 @@ return [
   | client side / axios headers name
   */
 
-  "token_key" => "authh",
+  "token_key" => "",
 
   /*
   |--------------------------------------------------------------------------
@@ -34,8 +34,8 @@ return [
   | your url host name
   */
   "payload" => [
-    "iss" = "",
-    "aud" = ""
+    "iss" => "",
+    "aud" => ""
   ]
 
   /*
