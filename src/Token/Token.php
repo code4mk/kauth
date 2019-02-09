@@ -2,18 +2,18 @@
 
 namespace Kauth\Token;
 
+/**
+* @author    @code4mk <hiremostafa@gmail.com>
+* @author    @0devco <with@0dev.co>
+* @since     2019
+* @copyright 0dev.co (https://0dev.co)
+*/
+
 use \Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use DateTime;
 use DateInterval;
 use Config;
-
-/**
- * @author    @code4mk <hiremostafa@gmail.com>
- * @author    @0devco <with@0dev.co>
- * @since     2019
- * @copyright 0dev.co (https://0dev.co)
- */
 
 class Token
 {

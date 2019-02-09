@@ -2,6 +2,13 @@
 
 namespace Kauth\Auth;
 
+/**
+ * @author    @code4mk <hiremostafa@gmail.com>
+ * @author    @0devco <with@0dev.co>
+ * @since     2019
+ * @copyright 0dev.co (https://0dev.co)
+ */
+ 
 use Illuminate\Http\Request;
 use Kauth\Model\KauthModel;
 use Kauth\Token\Token;
@@ -9,13 +16,6 @@ use DateTime;
 use Config;
 use Hash;
 use DB;
-
-/**
- * @author    @code4mk <hiremostafa@gmail.com>
- * @author    @0devco <with@0dev.co>
- * @since     2019
- * @copyright 0dev.co (https://0dev.co)
- */
 
 class Auth
 {
@@ -65,8 +65,8 @@ class Auth
   public function attempt($credentials)
   {
     $credential = [];
-    $getTokennames = $credentials['usernames'];
-    $getTokenname = $credentials['username'];
+    $getTokennames = $credentials['usernames'] ?? [];
+    $getTokenname = $credentials['username'] ?? '';
 
     // store credentials without password & username
 
@@ -222,7 +222,7 @@ class Auth
    * refresh token
    *
    * edit existing token
-   * 
+   *
    */
   public function refreshToken()
   {
