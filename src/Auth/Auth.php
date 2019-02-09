@@ -8,7 +8,7 @@ namespace Kauth\Auth;
  * @since     2019
  * @copyright 0dev.co (https://0dev.co)
  */
- 
+
 use Illuminate\Http\Request;
 use Kauth\Model\KauthModel;
 use Kauth\Token\Token;
@@ -123,7 +123,7 @@ class Auth
       $jwt->iat = $payloader['iat'];
       $jwt->exp = $payloader['expM'];
       $jwt->save();
-      return $jwt;
+      return $jwt->tokon;
     }
     return "wrong credentials";
   }
