@@ -15,7 +15,7 @@ class CreateKauthTable extends Migration
     {
         Schema::create('kauth', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('tokon',255)->nullable();
+            $table->text('tokon')->nullable();
             $table->integer('user_id')->nullable();
             $table->integer('iat')->nullable();
             $table->integer('exp')->nullable();
@@ -24,6 +24,8 @@ class CreateKauthTable extends Migration
             $table->string('device')->nullable();
             $table->string('os')->nullable();
             $table->string('login')->nullable();
+            $table->string('guard')->nullable();
+            $table->string('user_type')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

@@ -17,7 +17,7 @@ use Config;
 
 class Token
 {
-  public function create($tokenID){
+  public function create($tokenID,$userType){
     $issueDate = new DateTime();
     $expiredDate = new DateTime();
     $tokenDuration = Config::get('kauth.token_exp') ? Config::get('kauth.token_exp') : 'P32D';
@@ -27,11 +27,10 @@ class Token
     $key = "example_key";
     $token = array(
         "iss" => $jwtIss,
-        "aud" => $jwtAud,
-        "auth" => true,
+        "ut" => $userType,
         "iat" => $issueDate->getTimestamp(),
         "expM" => $expiredDate->getTimestamp(),
-        "token_id" => $tokenID,
+        "tid" => $tokenID,
     );
     $jwt = JWT::encode($token,$key);
 

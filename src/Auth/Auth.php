@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Kauth\Model\KauthModel;
 use Kauth\Token\Token;
 use DateTime;
+use Schema;
 use Config;
 use Hash;
 use DB;
@@ -23,6 +24,8 @@ class Auth
   protected $guard;
 
   protected $socialite;
+
+  protected $user_type = '';
 
   public function __construct()
   {
@@ -80,7 +83,7 @@ class Auth
 
     // fetch user by credentials
 
-    $getToken = DB::table(Config::get('kauth.guard.' . $this->guard. '.table'))
+    $getToken = DB::table(Config::get('kauth.guard.' . $this->guard . '.table'))
             // multiple username accept (id||username||email >> etc)
             ->where(function ($query) use ($getTokennames,$getTokenname){
               foreach ($getTokennames as $key => $value) {
@@ -114,14 +117,22 @@ class Auth
       $jwt->os = \Request::get('os');
       $jwt->device = \Request::get('device');
       $jwt->active = true;
+      $jwt->guard = $this->guard;
       $jwt->save();
 
       $secret = new Token();
-      $tokon = $secret->create($jwt->id);
+      if (Schema::hasColumn(Config::get('kauth.guard.' . $this->guard . '.table'), 'user_type')) {
+        $this->user_type = $getToken->user_type;
+      }
+      $tokon = $secret->create($jwt->id,$this->user_type);
       $payloader = $secret->payloader($tokon);
       $jwt->tokon = $tokon;
       $jwt->iat = $payloader['iat'];
       $jwt->exp = $payloader['expM'];
+
+      if (Schema::hasColumn($this->guard, 'user_type')) {
+        $jwt->user_type = $getToken->user_type;
+      }
       $jwt->save();
       return $jwt->tokon;
     }

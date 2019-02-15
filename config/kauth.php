@@ -29,13 +29,12 @@ return [
   | Kauth jwt payload iss and aud
   |--------------------------------------------------------------------------
   |
-  | You can set jwt iss and aud
+  | You can set jwt iss
   |
   | your url host name
   */
   "payload" => [
-    "iss" => "",
-    "aud" => ""
+    "iss" => ""
   ],
 
   /*
