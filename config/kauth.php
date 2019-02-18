@@ -3,14 +3,15 @@
 return [
   /*
   |--------------------------------------------------------------------------
-  | Kauth token key
+  | Kauth token key name
   |--------------------------------------------------------------------------
   |
-  | You can set your desired token key for request header
-  | client side / axios headers name
+  | You can set your desired token key name for request header
+  | client side / axios headers name as (Authorization)
+  | default is tokon
   */
 
-  "token_key" => "",
+  "token_header_name" => "",
 
   /*
   |--------------------------------------------------------------------------

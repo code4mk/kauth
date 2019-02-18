@@ -21,6 +21,9 @@ php artisan vendor:publish --provider="Kauth\KauthServiceProvider" --tag=migatio
 
 * `config\kauth.php`
 
+~ set token_header_name that you can use with guzzle or axios header
+~ default token_header_name name is `tokon`
+
 # Usage
 
 ## `Kauth::attempt()` functions

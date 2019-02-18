@@ -38,7 +38,7 @@ class Token
   }
 
   public function tokon(){
-    $token_header = Config::get('kauth.token_key') ? Config::get('kauth.token_key') : 'tokon';
+    $token_header = Config::get('kauth.token_header_name') ? Config::get('kauth.token_header_name') : 'tokon';
     $tokon = \Request::header($token_header);
     return $tokon;
   }
