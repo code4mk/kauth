@@ -116,6 +116,7 @@ class Auth
       $jwt->browser = \Request::get('browser');
       $jwt->os = \Request::get('os');
       $jwt->device = \Request::get('device');
+      $jwt->ip = \Request::get('ip');
       $jwt->active = true;
       $jwt->guard = $this->guard;
       $jwt->save();
@@ -181,6 +182,14 @@ class Auth
       return "jwt-error";
     }
 
+  }
+
+  public function auths()
+  {
+    $auths = KauthModel::where('user_id',$this->id())
+                      ->orderBy('id','desc')
+                      ->get();
+    return $auths;
   }
 
   /**
