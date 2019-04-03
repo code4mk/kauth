@@ -40,6 +40,10 @@ class Token
   public function tokon(){
     $token_header = Config::get('kauth.token_header_name') ? Config::get('kauth.token_header_name') : 'tokon';
     $tokon = \Request::header($token_header);
+
+    if(empty($tokon)){
+      return $_COOKIE[$token_header];
+    }
     return $tokon;
   }
 
