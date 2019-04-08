@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use DateTime;
 use DateInterval;
 use Config;
+use Cookie;
 
 class Token
 {
@@ -41,8 +42,14 @@ class Token
     $token_header = Config::get('kauth.token_header_name') ? Config::get('kauth.token_header_name') : 'tokon';
     $tokon = \Request::header($token_header);
 
-    if(empty($tokon)){
-      return $_COOKIE[$token_header];
+    if($tokon === null && (Config::get('kauth.cookie_auth')) ){
+      try {
+        return $_COOKIE['kauth_token'];
+      } catch (\Exception $e) {
+        return $e;
+      }
+
+
     }
     return $tokon;
   }
